@@ -442,11 +442,11 @@ AI-GENERATED INSIGHTS
             fig1,
             fig2,
             report_file.name,
-            gr.Dropdown(
-                choices=list(data.columns),
-                value=data.columns[0],
-                label="Select Column"
-            ),
+           gr.update(
+    choices=data.columns.astype(str).tolist(),
+    value=str(data.columns[0]),
+    label="Select Column"
+),
             data,
             data.head(10)
         )
