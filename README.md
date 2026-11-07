@@ -42,3 +42,10 @@ A demonstration video and screenshots will be added here.
 ## Developed As
 
 Academic Project – B.Sc. Computer Science with Data Science.
+## 🌐 Live Demo
+
+**Try the application here:**
+
+[Data Narrate AI – Live Website](https://data-narrate-ai.onrender.com)
+
+*Note: Hosted on Render Free Tier. The application may take a few moments to load after inactivity.*
