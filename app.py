@@ -190,6 +190,42 @@ footer {
     font-size: 12px;
     padding: 22px;
 }
+
+/* Improved text visibility */
+
+.gradio-container,
+.gradio-container .prose,
+.gradio-container .markdown {
+    color: #E8E9ED !important;
+}
+
+.gradio-container label,
+.gradio-container p,
+.gradio-container span {
+    color: #E8E9ED !important;
+}
+
+.gradio-container input,
+.gradio-container textarea,
+.gradio-container select {
+    color: #E8E9ED !important;
+    background: #21142B !important;
+}
+
+.gradio-container input::placeholder,
+.gradio-container textarea::placeholder {
+    color: #B8B9C5 !important;
+    opacity: 1 !important;
+}
+
+.gradio-container .prose table td {
+    color: #E8E9ED !important;
+}
+
+.gradio-container .prose table th {
+    color: #F4B942 !important;
+}
+
 """
 
 
