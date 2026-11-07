@@ -459,6 +459,8 @@ AI-GENERATED INSIGHTS
 
 
 # ==========================================
+
+# ==========================================
 # 4. DATA CLEANING
 # ==========================================
 
@@ -472,7 +474,8 @@ def clean_dataset(data, column, method):
     if not column or column not in data.columns:
         raise gr.Error("Please select a valid column.")
 
-    cleaned = data.copy()
+    # Shallow copy reduces unnecessary memory usage
+    cleaned = data.copy(deep=False)
 
     if method == "Fill with Mean":
 
@@ -507,25 +510,55 @@ def clean_dataset(data, column, method):
 
     elif method == "Drop Rows with Missing Values":
 
-        cleaned = cleaned.dropna(subset=[column]).copy()
+        cleaned = cleaned.dropna(subset=[column])
 
-    # CSV download
+    else:
+        raise gr.Error("Please select a valid cleaning method.")
+
+    # CSV download - write in chunks
     csv_file = tempfile.NamedTemporaryFile(
         suffix=".csv",
         delete=False
     )
     csv_file.close()
 
-    cleaned.to_csv(csv_file.name, index=False)
+    cleaned.to_csv(
+        csv_file.name,
+        index=False,
+        chunksize=10000
+    )
 
-    # Excel download
+    # Excel download - memory-efficient writing
+    from openpyxl import Workbook
+
     excel_file = tempfile.NamedTemporaryFile(
         suffix=".xlsx",
         delete=False
     )
     excel_file.close()
 
-    cleaned.to_excel(excel_file.name, index=False)
+    workbook = Workbook(write_only=True)
+    worksheet = workbook.create_sheet("Cleaned Data")
+
+    worksheet.append([str(col) for col in cleaned.columns])
+
+    for row in cleaned.itertuples(index=False, name=None):
+
+        excel_row = []
+
+        for value in row:
+
+            if pd.isna(value):
+                value = None
+
+            elif hasattr(value, "item"):
+                value = value.item()
+
+            excel_row.append(value)
+
+        worksheet.append(excel_row)
+
+    workbook.save(excel_file.name)
 
     status = f"""
 ## ✓ Cleaning Completed
@@ -551,6 +584,8 @@ def clean_dataset(data, column, method):
         excel_file.name
     )
 
+
+# ==========================================
 
 # ==========================================
 # 5. CREATE WEBSITE
